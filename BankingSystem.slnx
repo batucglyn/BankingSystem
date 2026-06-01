@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/src/" />
+  <Folder Name="/src/Services/" />
+  <Folder Name="/src/Services/Account/">
+    <Project Path="src/Services/Account/Banking.Services.Account.Api/Banking.Services.Account.Api.csproj" />
+    <Project Path="src/Services/Account/Banking.Services.Account.Application/Banking.Services.Account.Application.csproj" />
+    <Project Path="src/Services/Account/Banking.Services.Account.Domain/Banking.Services.Account.Domain.csproj" />
+    <Project Path="src/Services/Account/Banking.Services.Account.Infrastructure/Banking.Services.Account.Infrastructure.csproj" />
+  </Folder>
+</Solution>
