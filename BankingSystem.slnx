@@ -1,5 +1,8 @@
 <Solution>
   <Folder Name="/src/" />
+  <Folder Name="/src/BuildingBlocks/">
+    <Project Path="src/BuildingBlocks/Banking.Shared/Banking.Shared.csproj" Id="6da00366-1e82-4861-87f4-7fded36831b4" />
+  </Folder>
   <Folder Name="/src/Services/" />
   <Folder Name="/src/Services/Account/">
     <Project Path="src/Services/Account/Banking.Services.Account.Api/Banking.Services.Account.Api.csproj" />

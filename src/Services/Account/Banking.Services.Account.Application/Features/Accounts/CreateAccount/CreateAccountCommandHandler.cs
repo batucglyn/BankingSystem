@@ -1,5 +1,6 @@
 ﻿using Banking.Services.Account.Application.Abstractions;
 using Banking.Services.Account.Application.Common.Helpers;
+using Banking.Shared.Results;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace Banking.Services.Account.Application.Features.Accounts.CreateAccount
 {
-    public sealed class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, CreateAccountResponse>
+    public sealed class CreateAccountCommandHandler : IRequestHandler<CreateAccountCommand, Result<CreateAccountResponse>>
     {
 
         private readonly IAccountDbContext _context;
@@ -17,7 +18,7 @@ namespace Banking.Services.Account.Application.Features.Accounts.CreateAccount
             _context = context;
         }
 
-        public async Task<CreateAccountResponse> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
+        public async Task<Result<CreateAccountResponse>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
 
             // TODO:
@@ -46,7 +47,12 @@ namespace Banking.Services.Account.Application.Features.Accounts.CreateAccount
             await _context.SaveChangesAsync(
           cancellationToken);
 
-           return new CreateAccountResponse(account.Id, account.AccountNumber, account.IBAN);
+
+            return Result<CreateAccountResponse>.Success(
+                 new CreateAccountResponse(account.Id, account.AccountNumber, account.IBAN)
+             );
+
+          
 
 
         }

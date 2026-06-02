@@ -26,6 +26,32 @@ namespace Banking.Services.Account.Domain.Entities
         public DateTime? UpdatedAt { get; set; }
 
 
+        public void Deposit(decimal amount)
+        {
+            if (amount <= 0)
+            {
+                throw new ArgumentException(
+                    "Amount must be greater than zero.");
+            }
 
+            Balance += amount;
+        }
+
+        public void Withdraw(decimal amount)
+        {
+            if (amount <= 0)
+            {
+                throw new ArgumentException(
+                    "Amount must be greater than zero.");
+            }
+
+            if (Balance - amount < 0)
+            {
+                throw new InvalidOperationException(
+                    "Insufficient balance.");
+            }
+
+            Balance -= amount;
+        }
     }
 }
