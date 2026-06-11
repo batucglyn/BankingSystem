@@ -33,11 +33,12 @@ public sealed class GetAccountByIdQueryHandler : IRequestHandler<GetAccountByIdQ
 
 
         var response = new GetAccountByIdResponse(
-            account.Id,
-            account.AccountNumber,
-            account.IBAN,
-            account.Balance,
-            account.Currency);
+       account.Id,
+       account.AccountNumber,
+       account.IBAN,
+       account.Balance.Amount,
+       account.Balance.Currency
+   );
 
         return Result<GetAccountByIdResponse>
             .Success(response);

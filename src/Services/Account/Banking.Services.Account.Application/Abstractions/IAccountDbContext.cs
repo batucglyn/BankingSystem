@@ -9,7 +9,7 @@ namespace Banking.Services.Account.Application.Abstractions
     {
         
         DbSet<Domain.Entities.Account> Accounts { get; }
-
+        DbSet<AccountTransaction> AccountTransactions { get; }
         Task<int> SaveChangesAsync(
             CancellationToken cancellationToken);
     }

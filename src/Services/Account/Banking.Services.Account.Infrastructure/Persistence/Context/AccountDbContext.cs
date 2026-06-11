@@ -1,4 +1,5 @@
 ﻿using Banking.Services.Account.Application.Abstractions;
+using Banking.Services.Account.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,8 @@ namespace Banking.Services.Account.Infrastructure.Persistence.Context
 
         public DbSet<Domain.Entities.Account> Accounts => Set<Domain.Entities.Account>();
 
-   
+        public DbSet<AccountTransaction> AccountTransactions
+         => Set<AccountTransaction>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

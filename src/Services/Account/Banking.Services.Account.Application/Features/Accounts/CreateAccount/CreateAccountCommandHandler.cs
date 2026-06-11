@@ -1,5 +1,6 @@
 ﻿using Banking.Services.Account.Application.Abstractions;
 using Banking.Services.Account.Application.Common.Helpers;
+using Banking.Services.Account.Domain.ValueObjects;
 using Banking.Shared.Results;
 using MediatR;
 using System;
@@ -28,31 +29,26 @@ namespace Banking.Services.Account.Application.Features.Accounts.CreateAccount
             var accountNumber = AccountNumberGenerator.Generate();
             var iban = IBANGenerator.Generate(accountNumber);
 
-
-            var account = new Domain.Entities.Account
-            {
-                Id = Guid.NewGuid(),
-                CustomerId = request.CustomerId,
-                AccountNumber = accountNumber,
-                IBAN = iban,
-                Currency = request.Currency,
-                Balance = 0m,
-                Status = Domain.Enums.AccountStatus.Active,
-                CreatedAt = DateTime.UtcNow
-            };
-
+            var account = new Domain.Entities.Account(
+                request.CustomerId,
+                accountNumber,
+                iban,
+                request.Currency
+            );
 
             await _context.Accounts.AddAsync(account, cancellationToken);
 
-            await _context.SaveChangesAsync(
-          cancellationToken);
-
+            await _context.SaveChangesAsync(cancellationToken);
 
             return Result<CreateAccountResponse>.Success(
-                 new CreateAccountResponse(account.Id, account.AccountNumber, account.IBAN)
-             );
+                new CreateAccountResponse(
+                    account.Id,
+                    account.AccountNumber,
+                    account.IBAN
+                )
+            );
 
-          
+
 
 
         }

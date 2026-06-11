@@ -25,12 +25,17 @@ namespace Banking.Services.Account.Infrastructure.Persistence.Configurations
                 .IsRequired()
                 .HasMaxLength(34);
 
-            builder.Property(x => x.Balance)
-                .HasPrecision(18, 2);
+            builder.OwnsOne(x => x.Balance, money =>
+            {
+                money.Property(x => x.Amount)
+                    .HasColumnName("Balance")
+                    .HasPrecision(18, 2)
+                    .IsRequired();
 
-            builder.Property(x => x.Currency)
-                .IsRequired();
-
+                money.Property(x => x.Currency)
+                    .HasColumnName("Currency")
+                    .IsRequired();
+            });
             builder.Property(x => x.Status)
                 .IsRequired();
 

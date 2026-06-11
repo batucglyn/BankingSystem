@@ -1,4 +1,5 @@
 ﻿using Banking.Services.Account.Domain.Enums;
+using Banking.Services.Account.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -15,9 +16,7 @@ namespace Banking.Services.Account.Domain.Entities
 
         public string IBAN { get; set; } = default!;
 
-        public decimal Balance { get; set; }
-
-        public CurrencyType Currency { get; set; }
+        public Money Balance { get; private set; } = default!;
 
         public AccountStatus Status { get; set; }
 
@@ -25,33 +24,44 @@ namespace Banking.Services.Account.Domain.Entities
 
         public DateTime? UpdatedAt { get; set; }
 
+        private Account()
+        {
+        }
+
+        public Account(
+            Guid customerId,
+            string accountNumber,
+            string iban,
+            CurrencyType currency)
+        {
+            Id = Guid.NewGuid();
+            CustomerId = customerId;
+            AccountNumber = accountNumber;
+            IBAN = iban;
+            Balance = new Money(0, currency);
+            Status = AccountStatus.Active;
+            CreatedAt = DateTime.UtcNow;
+        }
 
         public void Deposit(decimal amount)
         {
             if (amount <= 0)
-            {
-                throw new ArgumentException(
-                    "Amount must be greater than zero.");
-            }
+                throw new ArgumentException("Amount must be greater than zero.");
 
-            Balance += amount;
+            Balance = Balance.Add(amount);
+            UpdatedAt = DateTime.UtcNow;
         }
 
         public void Withdraw(decimal amount)
         {
             if (amount <= 0)
-            {
-                throw new ArgumentException(
-                    "Amount must be greater than zero.");
-            }
+                throw new ArgumentException("Amount must be greater than zero.");
 
-            if (Balance - amount < 0)
-            {
-                throw new InvalidOperationException(
-                    "Insufficient balance.");
-            }
+            if (Balance.Amount < amount)
+                throw new InvalidOperationException("Insufficient balance.");
 
-            Balance -= amount;
+            Balance = Balance.Subtract(amount);
+            UpdatedAt = DateTime.UtcNow;
         }
     }
 }
