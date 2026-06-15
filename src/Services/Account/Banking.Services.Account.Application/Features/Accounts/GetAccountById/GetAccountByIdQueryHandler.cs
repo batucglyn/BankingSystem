@@ -37,7 +37,8 @@ public sealed class GetAccountByIdQueryHandler : IRequestHandler<GetAccountByIdQ
        account.AccountNumber,
        account.IBAN,
        account.Balance.Amount,
-       account.Balance.Currency
+       account.Balance.Currency,
+       account.Status
    );
 
         return Result<GetAccountByIdResponse>

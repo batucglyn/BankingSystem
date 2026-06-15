@@ -3,6 +3,7 @@ using System;
 using Banking.Services.Account.Infrastructure.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Banking.Services.Account.Infrastructure.Migrations
 {
     [DbContext(typeof(AccountDbContext))]
-    partial class AccountDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260614134216_AddUniqueIndexes")]
+    partial class AddUniqueIndexes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +61,7 @@ namespace Banking.Services.Account.Infrastructure.Migrations
                     b.HasIndex("IBAN")
                         .IsUnique();
 
-                    b.ToTable("Accounts", (string)null);
+                    b.ToTable("Accounts");
                 });
 
             modelBuilder.Entity("Banking.Services.Account.Domain.Entities.AccountTransaction", b =>
@@ -90,7 +93,7 @@ namespace Banking.Services.Account.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("AccountTransactions", (string)null);
+                    b.ToTable("AccountTransactions");
                 });
 
             modelBuilder.Entity("Banking.Services.Account.Domain.Entities.Account", b =>
@@ -111,7 +114,7 @@ namespace Banking.Services.Account.Infrastructure.Migrations
 
                             b1.HasKey("AccountId");
 
-                            b1.ToTable("Accounts", (string)null);
+                            b1.ToTable("Accounts");
 
                             b1.WithOwner()
                                 .HasForeignKey("AccountId");

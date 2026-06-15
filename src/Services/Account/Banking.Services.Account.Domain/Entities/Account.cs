@@ -45,6 +45,9 @@ namespace Banking.Services.Account.Domain.Entities
 
         public void Deposit(decimal amount)
         {
+            if (Status != AccountStatus.Active)
+                throw new InvalidOperationException("Only active accounts can receive deposit.");
+
             if (amount <= 0)
                 throw new ArgumentException("Amount must be greater than zero.");
 
@@ -54,13 +57,37 @@ namespace Banking.Services.Account.Domain.Entities
 
         public void Withdraw(decimal amount)
         {
+            if (Status != AccountStatus.Active)
+                throw new InvalidOperationException("Only active accounts can withdraw money.");
+
             if (amount <= 0)
                 throw new ArgumentException("Amount must be greater than zero.");
 
-            if (Balance.Amount < amount)
-                throw new InvalidOperationException("Insufficient balance.");
-
             Balance = Balance.Subtract(amount);
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void Block()
+        {
+            if (Status == AccountStatus.Closed)
+            {
+                throw new InvalidOperationException(
+                    "Closed account cannot be blocked.");
+            }
+
+            Status = AccountStatus.Blocked;
+            UpdatedAt = DateTime.UtcNow;
+        }
+
+        public void Close()
+        {
+            if (Balance.Amount > 0)
+            {
+                throw new InvalidOperationException(
+                    "Account balance must be zero before closing.");
+            }
+
+            Status = AccountStatus.Closed;
             UpdatedAt = DateTime.UtcNow;
         }
     }

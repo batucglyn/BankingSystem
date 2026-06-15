@@ -10,6 +10,7 @@ namespace Banking.Services.Account.Application.Features.Accounts.GetAccountById
      string AccountNumber,
      string IBAN,
      decimal Balance,
-     CurrencyType Currency
+     CurrencyType Currency,
+     AccountStatus Status
  );
 }

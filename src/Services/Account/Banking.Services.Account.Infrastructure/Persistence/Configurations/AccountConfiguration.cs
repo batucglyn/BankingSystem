@@ -14,6 +14,11 @@ namespace Banking.Services.Account.Infrastructure.Persistence.Configurations
 
             builder.HasKey(x => x.Id);
 
+            builder.HasIndex(x => x.AccountNumber)
+                .IsUnique();
+
+            builder.HasIndex(x => x.IBAN)
+                .IsUnique();
             builder.Property(x => x.CustomerId)
                 .IsRequired();
 
