@@ -1,4 +1,6 @@
-﻿using Banking.Services.Account.Domain.Enums;
+﻿using Banking.Services.Account.Domain.Common;
+using Banking.Services.Account.Domain.Enums;
+using Banking.Services.Account.Domain.Events;
 using Banking.Services.Account.Domain.ValueObjects;
 using System;
 using System.Collections.Generic;
@@ -6,7 +8,7 @@ using System.Text;
 
 namespace Banking.Services.Account.Domain.Entities
 {
-    public class Account
+    public class Account: Entity
     {
 
         public Guid Id { get; set; }
@@ -41,6 +43,11 @@ namespace Banking.Services.Account.Domain.Entities
             Balance = new Money(0, currency);
             Status = AccountStatus.Active;
             CreatedAt = DateTime.UtcNow;
+            AddDomainEvent(
+            new AccountCreatedEvent(
+                Id,
+                CustomerId,
+                IBAN));
         }
 
         public void Deposit(decimal amount)

@@ -8,12 +8,13 @@ using Banking.Services.Account.Infrastructure.Persistence.DependencyInjection;
 using Banking.Shared.Middlewares;
 using FluentValidation;
 using MediatR;
+using Banking.Bus.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddCommonMassTransit(builder.Configuration);
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
@@ -29,6 +30,7 @@ builder.Services.AddValidatorsFromAssembly(
 builder.Services.AddTransient(
     typeof(IPipelineBehavior<,>),
     typeof(ValidationBehavior<,>));
+
 
 
 
