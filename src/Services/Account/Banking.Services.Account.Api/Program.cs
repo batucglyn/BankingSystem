@@ -9,6 +9,7 @@ using Banking.Shared.Middlewares;
 using FluentValidation;
 using MediatR;
 using Banking.Bus.Extensions;
+using Banking.Services.Account.Application;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,18 +19,7 @@ builder.Services.AddCommonMassTransit(builder.Configuration);
 
 builder.Services.AddInfrastructure(builder.Configuration);
 
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssembly(
-        typeof(CreateAccountCommandHandler).Assembly);
-});
-
-builder.Services.AddValidatorsFromAssembly(
-    typeof(CreateAccountCommandValidator).Assembly);
-
-builder.Services.AddTransient(
-    typeof(IPipelineBehavior<,>),
-    typeof(ValidationBehavior<,>));
+builder.Services.AddApplicationServices();
 
 
 

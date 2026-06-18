@@ -11,6 +11,12 @@
     <Project Path="src/Services/Account/Banking.Services.Account.Domain/Banking.Services.Account.Domain.csproj" />
     <Project Path="src/Services/Account/Banking.Services.Account.Infrastructure/Banking.Services.Account.Infrastructure.csproj" />
   </Folder>
+  <Folder Name="/src/Services/Customer/">
+    <Project Path="src/Services/Customer/Banking.Services.Customer.Api/Banking.Services.Customer.Api.csproj" Id="6c49660d-ea20-4277-87ab-e2b1e6cb4188" />
+    <Project Path="src/Services/Customer/Banking.Services.Customer.Application/Banking.Services.Customer.Application.csproj" Id="562950e3-0389-44ad-95b0-ac570167b223" />
+    <Project Path="src/Services/Customer/Banking.Services.Customer.Domain/Banking.Services.Customer.Domain.csproj" Id="4626c569-a154-4a9f-8218-9bcffe409b34" />
+    <Project Path="src/Services/Customer/Banking.Services.Customer.Infrastructure/Banking.Services.Customer.Infrastructure.csproj" Id="c1d0825b-eafb-4f2d-b4ee-c3a1037b70ae" />
+  </Folder>
   <Folder Name="/src/Services/Notification/">
     <Project Path="src/Services/Notification/Banking.Services.Notification.Api/Banking.Services.Notification.Api.csproj" Id="992179f6-bd1b-4d2a-99b3-c51a220c10b2" />
   </Folder>
