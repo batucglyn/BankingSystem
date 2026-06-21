@@ -1,5 +1,7 @@
-﻿using Banking.Services.Customer.Application.Abstractions;
+﻿using Banking.Bus.Events;
+using Banking.Services.Customer.Application.Abstractions;
 using Banking.Shared.Results;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,23 +16,24 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
 
 
     private readonly ICustomerDbContext _context;
-
-    public CreateCustomerCommandHandler(ICustomerDbContext context)
+    private readonly IPublishEndpoint _publishEndpoint;
+    public CreateCustomerCommandHandler(ICustomerDbContext context, IPublishEndpoint publishEndpoint)
     {
         _context = context;
+        _publishEndpoint = publishEndpoint;
     }
 
     public async Task<Result<CreateCustomerResponse>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
-      
+
 
         if (await _context.Customers
             .AnyAsync(x => x.Email == request.Email, cancellationToken))
-            return Result<CreateCustomerResponse>.Failure("Email already exists.");     
+            return Result<CreateCustomerResponse>.Failure("Email already exists.");
 
         if (await _context.Customers
             .AnyAsync(x => x.PhoneNumber == request.PhoneNumber, cancellationToken))
-            return Result<CreateCustomerResponse>.Failure("Phone number already exists.");  
+            return Result<CreateCustomerResponse>.Failure("Phone number already exists.");
 
         if (await _context.Customers
             .AnyAsync(x => x.IdentityNumber == request.IdentityNumber, cancellationToken))
@@ -46,6 +49,18 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
         await _context.Customers.AddAsync(customer, cancellationToken);
 
         await _context.SaveChangesAsync(cancellationToken);
+
+
+        await _publishEndpoint.Publish(new CustomerCreatedEvent(
+
+            customer.Id,
+            customer.FirstName,
+            customer.LastName,
+            customer.Email,
+            customer.PhoneNumber), cancellationToken);
+    
+
+            
 
         return Result<CreateCustomerResponse>.Success(
             new CreateCustomerResponse(customer.Id));

@@ -1,5 +1,6 @@
 ﻿using Banking.Services.Account.Application.Abstractions;
 using Banking.Services.Account.Infrastructure.Persistence.Context;
+using Banking.Services.Account.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,8 +23,13 @@ public static class ServiceRegistration
 
 
         services.AddScoped<IAccountDbContext, AccountDbContext>();
-
-
+        //degisecek
+        services.AddHttpClient<ICustomerServiceClient, CustomerServiceClient>(
+    client =>
+    {
+        client.BaseAddress = new Uri(
+            configuration["CustomerService:BaseUrl"]!);
+    });
         return services;
     }
 

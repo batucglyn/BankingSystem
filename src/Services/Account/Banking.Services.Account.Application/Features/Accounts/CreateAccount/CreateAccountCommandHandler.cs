@@ -16,20 +16,31 @@ namespace Banking.Services.Account.Application.Features.Accounts.CreateAccount
 
         private readonly IAccountDbContext _context;
         private readonly IPublishEndpoint _publishEndpoint;
+        private readonly ICustomerServiceClient _customerServiceClient;
 
 
-
-        public CreateAccountCommandHandler(IAccountDbContext context, IPublishEndpoint publishEndpoint)
+        public CreateAccountCommandHandler(IAccountDbContext context, IPublishEndpoint publishEndpoint, ICustomerServiceClient customerServiceClient)
         {
             _context = context;
             _publishEndpoint = publishEndpoint;
+            _customerServiceClient = customerServiceClient;
         }
 
         public async Task<Result<CreateAccountResponse>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
 
-            // TODO:
-            // CustomerService üzerinden müşteri kontrolü yapılacak
+            // checking if customer exists and is active by calling the customer service
+            var customerExists = await _customerServiceClient
+                    .CustomerExistsAndActiveAsync(
+                        request.CustomerId,
+                        cancellationToken);
+
+                if (!customerExists)
+                {
+                    return Result<CreateAccountResponse>
+                        .Failure("Customer not found or inactive.");
+                }
+      
 
 
             var accountNumber = AccountNumberGenerator.Generate();
@@ -46,8 +57,8 @@ namespace Banking.Services.Account.Application.Features.Accounts.CreateAccount
 
             await _context.SaveChangesAsync(cancellationToken);
 
-            await _publishEndpoint.Publish(new AccountCreatedEvent(account.Id, account.CustomerId, account.IBAN),cancellationToken);
-     
+            await _publishEndpoint.Publish(new AccountCreatedEvent(account.Id, account.CustomerId, account.IBAN), cancellationToken);
+
 
             return Result<CreateAccountResponse>.Success(
                 new CreateAccountResponse(

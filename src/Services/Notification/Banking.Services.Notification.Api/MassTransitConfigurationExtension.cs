@@ -17,6 +17,9 @@ namespace Banking.Services.Notification.Api
             services.AddMassTransit(configure =>
             {
                 configure.AddConsumer<AccountCreatedEventConsumer>();
+                configure.AddConsumer<CustomerCreatedEventConsumer>();
+
+
 
                 configure.UsingRabbitMq((ctx, cfg) =>
                 {
@@ -34,6 +37,12 @@ namespace Banking.Services.Notification.Api
                         {
                             e.ConfigureConsumer<AccountCreatedEventConsumer>(ctx);
                         });
+                    cfg.ReceiveEndpoint(
+                            "notification-service.customer-created.queue",
+                            e =>
+                            {
+                                e.ConfigureConsumer<CustomerCreatedEventConsumer>(ctx);
+                            });
                 });
             });
 

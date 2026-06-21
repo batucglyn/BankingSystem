@@ -1,3 +1,4 @@
+using Banking.Bus.Extensions;
 using Banking.Services.Customer.Api.Endpoints.Customers;
 using Banking.Services.Customer.Application;
 using Banking.Services.Customer.Infrastructure.DependencyInjection;
@@ -12,7 +13,7 @@ builder.Services.AddInfrastructureServices(builder.Configuration);
 
 builder.Services.AddApplicationServices();
 
-
+builder.Services.AddCommonMassTransit(builder.Configuration);
 
 var app = builder.Build();
 
