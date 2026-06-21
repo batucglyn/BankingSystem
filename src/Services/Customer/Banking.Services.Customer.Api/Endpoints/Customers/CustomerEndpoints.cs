@@ -3,6 +3,8 @@ using Banking.Services.Customer.Api.Endpoints.Customers.CheckCustomerExists;
 using Banking.Services.Customer.Api.Endpoints.Customers.CreateCustomer;
 using Banking.Services.Customer.Api.Endpoints.Customers.DeactivateCustomer;
 using Banking.Services.Customer.Api.Endpoints.Customers.GetCustomer;
+using Banking.Services.Customer.Api.Endpoints.Customers.GetCustomers;
+using Banking.Services.Customer.Api.Endpoints.Customers.UpdateCustomer;
 
 namespace Banking.Services.Customer.Api.Endpoints.Customers
 {
@@ -19,6 +21,8 @@ namespace Banking.Services.Customer.Api.Endpoints.Customers
             group.MapCheckCustomerExistsEndpoint();
             group.MapDeactivateCustomerEndpoint();
             group.MapActivateCustomerEndpoint();
+            group.MapUpdateCustomerEndpoint();
+            group.MapGetCustomersEndpoint();
             return group;
           
         }

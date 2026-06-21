@@ -81,5 +81,19 @@ public sealed class Customer
         UpdatedAt = DateTime.UtcNow;
     }
 
+    public void Update(
+    string firstName,
+    string lastName,
+    string email,
+    string phoneNumber,
+    string? photoUrl)
+    {
+        FirstName = firstName;
+        LastName = lastName;
+        Email = email;
+        PhoneNumber = phoneNumber;
+        PhotoUrl = photoUrl;
+        UpdatedAt = DateTime.UtcNow;
+    }
 }
 
