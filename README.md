@@ -83,8 +83,8 @@ This project is being developed to gain hands-on experience with:
 
 Current Progress:
 - Account Service ✅
-- Customer Service ⏳
+- Customer Service ✅
 - Transaction Service ⏳
-- Notification Service ⏳
+- Notification Service ✅
 - API Gateway ⏳
 ```
