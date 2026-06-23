@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using Banking.Shared.Exceptions;
+using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
@@ -9,14 +10,12 @@ namespace Banking.Shared.Middlewares
     {
         private readonly RequestDelegate _next;
 
-        public GlobalExceptionMiddleware(
-            RequestDelegate next)
+        public GlobalExceptionMiddleware(RequestDelegate next)
         {
             _next = next;
         }
 
-        public async Task InvokeAsync(
-            HttpContext context)
+        public async Task InvokeAsync(HttpContext context)
         {
             try
             {
@@ -24,9 +23,7 @@ namespace Banking.Shared.Middlewares
             }
             catch (Exception exception)
             {
-                await HandleExceptionAsync(
-                    context,
-                    exception);
+                await HandleExceptionAsync(context, exception);
             }
         }
 
@@ -41,15 +38,10 @@ namespace Banking.Shared.Middlewares
             switch (exception)
             {
                 case ValidationException validationException:
-
-                    context.Response.StatusCode =
-                        StatusCodes.Status400BadRequest;
+                    context.Response.StatusCode = StatusCodes.Status400BadRequest;
 
                     problemDetails.Title = "Validation Error";
-
-                    problemDetails.Status =
-                        StatusCodes.Status400BadRequest;
-
+                    problemDetails.Status = StatusCodes.Status400BadRequest;
                     problemDetails.Extensions["errors"] =
                         validationException.Errors
                             .Select(x => x.ErrorMessage)
@@ -57,25 +49,26 @@ namespace Banking.Shared.Middlewares
 
                     break;
 
+                case CustomerServiceUnavailableException customerServiceUnavailableException:
+                    context.Response.StatusCode = StatusCodes.Status503ServiceUnavailable;
+
+                    problemDetails.Title = "Service Unavailable";
+                    problemDetails.Status = StatusCodes.Status503ServiceUnavailable;
+                    problemDetails.Detail = customerServiceUnavailableException.Message;
+
+                    break;
+
                 default:
+                    context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-                    context.Response.StatusCode =
-                        StatusCodes.Status500InternalServerError;
-
-                    problemDetails.Title =
-                        "Server Error";
-
-                    problemDetails.Status =
-                        StatusCodes.Status500InternalServerError;
-
-                    problemDetails.Detail =
-                        "An unexpected error occurred.";
+                    problemDetails.Title = "Server Error";
+                    problemDetails.Status = StatusCodes.Status500InternalServerError;
+                    problemDetails.Detail = "An unexpected error occurred.";
 
                     break;
             }
 
-            var response =
-                JsonSerializer.Serialize(problemDetails);
+            var response = JsonSerializer.Serialize(problemDetails);
 
             await context.Response.WriteAsync(response);
         }
