@@ -1,5 +1,6 @@
 ﻿using Banking.Services.Account.Application.Abstractions;
 using Banking.Services.Account.Domain.Entities;
+using Banking.Services.Account.Domain.Outbox;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace Banking.Services.Account.Infrastructure.Persistence.Context
 
         public DbSet<AccountTransaction> AccountTransactions
          => Set<AccountTransaction>();
+        public DbSet<OutboxMessage> OutboxMessages => Set<OutboxMessage>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -17,6 +17,9 @@
     <Project Path="src/Services/Customer/Banking.Services.Customer.Domain/Banking.Services.Customer.Domain.csproj" Id="4626c569-a154-4a9f-8218-9bcffe409b34" />
     <Project Path="src/Services/Customer/Banking.Services.Customer.Infrastructure/Banking.Services.Customer.Infrastructure.csproj" Id="c1d0825b-eafb-4f2d-b4ee-c3a1037b70ae" />
   </Folder>
+  <Folder Name="/src/Services/Gateway/">
+    <Project Path="src/Services/Gateway/Banking.Services.Gateway.Api/Banking.Services.Gateway.Api.csproj" Id="f1ffd94f-bcd1-480a-a6a5-b241941137a1" />
+  </Folder>
   <Folder Name="/src/Services/Notification/">
     <Project Path="src/Services/Notification/Banking.Services.Notification.Api/Banking.Services.Notification.Api.csproj" Id="992179f6-bd1b-4d2a-99b3-c51a220c10b2" />
   </Folder>

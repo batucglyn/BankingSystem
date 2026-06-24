@@ -1,13 +1,10 @@
 ﻿using Banking.Bus.Events;
 using Banking.Services.Account.Application.Abstractions;
 using Banking.Services.Account.Application.Common.Helpers;
-using Banking.Services.Account.Domain.ValueObjects;
+using Banking.Services.Account.Domain.Outbox;
 using Banking.Shared.Results;
-using MassTransit;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Text.Json;
 
 namespace Banking.Services.Account.Application.Features.Accounts.CreateAccount
 {
@@ -15,14 +12,13 @@ namespace Banking.Services.Account.Application.Features.Accounts.CreateAccount
     {
 
         private readonly IAccountDbContext _context;
-        private readonly IPublishEndpoint _publishEndpoint;
+       
         private readonly ICustomerServiceClient _customerServiceClient;
 
 
-        public CreateAccountCommandHandler(IAccountDbContext context, IPublishEndpoint publishEndpoint, ICustomerServiceClient customerServiceClient)
+        public CreateAccountCommandHandler(IAccountDbContext context, ICustomerServiceClient customerServiceClient)
         {
             _context = context;
-            _publishEndpoint = publishEndpoint;
             _customerServiceClient = customerServiceClient;
         }
 
@@ -55,9 +51,26 @@ namespace Banking.Services.Account.Application.Features.Accounts.CreateAccount
 
             await _context.Accounts.AddAsync(account, cancellationToken);
 
+            var accountCreatedEvent = new AccountCreatedEvent(
+                account.Id,
+                account.CustomerId,
+                account.IBAN);
+
+            var outboxMessage = new OutboxMessage
+            {
+                Id = Guid.CreateVersion7(),
+                Type = nameof(AccountCreatedEvent),
+                Content = JsonSerializer.Serialize(accountCreatedEvent),
+                CreatedAt = DateTime.UtcNow
+            };
+
+            await _context.OutboxMessages.AddAsync(
+                outboxMessage,
+                cancellationToken);
+
             await _context.SaveChangesAsync(cancellationToken);
 
-            await _publishEndpoint.Publish(new AccountCreatedEvent(account.Id, account.CustomerId, account.IBAN), cancellationToken);
+
 
 
             return Result<CreateAccountResponse>.Success(

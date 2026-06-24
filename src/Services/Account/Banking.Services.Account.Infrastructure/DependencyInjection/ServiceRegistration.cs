@@ -1,4 +1,5 @@
 ﻿using Banking.Services.Account.Application.Abstractions;
+using Banking.Services.Account.Infrastructure.BackgroundServices;
 using Banking.Services.Account.Infrastructure.Persistence.Context;
 using Banking.Services.Account.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
@@ -42,6 +43,9 @@ public static class ServiceRegistration
         policy.CircuitBreakerAsync(
             5,
             TimeSpan.FromSeconds(30)));
+
+
+        services.AddHostedService<OutboxProcessor>();
         return services;
     }
 

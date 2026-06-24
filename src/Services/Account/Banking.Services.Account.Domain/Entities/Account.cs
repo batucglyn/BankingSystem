@@ -43,11 +43,7 @@ namespace Banking.Services.Account.Domain.Entities
             Balance = new Money(0, currency);
             Status = AccountStatus.Active;
             CreatedAt = DateTime.UtcNow;
-            AddDomainEvent(
-            new AccountCreatedEvent(
-                Id,
-                CustomerId,
-                IBAN));
+          
         }
 
         public void Deposit(decimal amount)
