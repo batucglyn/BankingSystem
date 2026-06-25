@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Bus\Banking.Bus.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Outbox\Banking.Outbox.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Shared\Banking.Shared.csproj" />
     <ProjectReference Include="..\Banking.Services.Customer.Domain\Banking.Services.Customer.Domain.csproj" />
   </ItemGroup>

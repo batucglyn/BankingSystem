@@ -1,6 +1,7 @@
-﻿using Banking.Services.Account.Application.Abstractions;
+﻿using Banking.Outbox;
+using Banking.Services.Account.Application.Abstractions;
 using Banking.Services.Account.Domain.Entities;
-using Banking.Services.Account.Domain.Outbox;
+
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Text;
 
 namespace Banking.Services.Account.Infrastructure.Persistence.Context
 {
-    public class AccountDbContext : DbContext, IAccountDbContext
+    public class AccountDbContext : DbContext, IAccountDbContext, IOutboxDbContext
     {
 
         public AccountDbContext(DbContextOptions<AccountDbContext> options) : base(options) { }
@@ -25,7 +26,7 @@ namespace Banking.Services.Account.Infrastructure.Persistence.Context
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(AccountDbContext).Assembly);
-
+            modelBuilder.ApplyConfiguration(new OutboxMessageConfiguration());
         }
 
 

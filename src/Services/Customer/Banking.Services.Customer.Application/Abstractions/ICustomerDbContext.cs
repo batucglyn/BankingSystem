@@ -1,15 +1,12 @@
-﻿using Banking.Services.Customer.Domain.Entities;
+﻿using Banking.Outbox;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Banking.Services.Customer.Application.Abstractions
 {
     public interface ICustomerDbContext
     {
         DbSet<Domain.Entities.Customer> Customers { get; }
-        
+        DbSet<OutboxMessage> OutboxMessages { get; }
         Task<int> SaveChangesAsync(
             CancellationToken cancellationToken=default);
     }

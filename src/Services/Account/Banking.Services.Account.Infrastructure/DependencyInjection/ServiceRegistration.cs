@@ -1,15 +1,12 @@
-﻿using Banking.Services.Account.Application.Abstractions;
-using Banking.Services.Account.Infrastructure.BackgroundServices;
+﻿using Banking.Outbox;
+using Banking.Services.Account.Application.Abstractions;
+
 using Banking.Services.Account.Infrastructure.Persistence.Context;
 using Banking.Services.Account.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
-using System;
-using System.Collections.Generic;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
 
 namespace Banking.Services.Account.Infrastructure.DependencyInjection;
 
@@ -45,7 +42,7 @@ public static class ServiceRegistration
             TimeSpan.FromSeconds(30)));
 
 
-        services.AddHostedService<OutboxProcessor>();
+        services.AddOutboxProcessor<AccountDbContext>();
         return services;
     }
 

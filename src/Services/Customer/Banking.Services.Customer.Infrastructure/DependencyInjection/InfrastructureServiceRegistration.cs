@@ -1,11 +1,10 @@
-﻿using Banking.Services.Customer.Application.Abstractions;
+﻿using Banking.Outbox;
+using Banking.Services.Customer.Application.Abstractions;
+
 using Banking.Services.Customer.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Banking.Services.Customer.Infrastructure.DependencyInjection
 {
@@ -23,6 +22,8 @@ namespace Banking.Services.Customer.Infrastructure.DependencyInjection
 
             services.AddScoped<ICustomerDbContext>(
                 provider => provider.GetRequiredService<CustomerDbContext>());
+
+            services.AddOutboxProcessor<CustomerDbContext>();
 
             return services;
         }

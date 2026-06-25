@@ -1,5 +1,6 @@
-﻿using Banking.Services.Account.Domain.Entities;
-using Banking.Services.Account.Domain.Outbox;
+﻿using Banking.Outbox;
+using Banking.Services.Account.Domain.Entities;
+
 using Microsoft.EntityFrameworkCore;
 namespace Banking.Services.Account.Application.Abstractions
 {

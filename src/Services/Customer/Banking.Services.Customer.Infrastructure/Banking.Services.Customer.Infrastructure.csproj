@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Outbox\Banking.Outbox.csproj" />
     <ProjectReference Include="..\Banking.Services.Customer.Application\Banking.Services.Customer.Application.csproj" />
   </ItemGroup>
 

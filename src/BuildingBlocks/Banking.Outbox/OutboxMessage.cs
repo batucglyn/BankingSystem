@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Banking.Services.Account.Domain.Outbox
+namespace Banking.Outbox
 {
+
     public sealed class OutboxMessage
     {
         public Guid Id { get; set; }
@@ -15,6 +16,7 @@ namespace Banking.Services.Account.Domain.Outbox
         public DateTime CreatedAt { get; set; }
 
         public DateTime? ProcessedAt { get; set; }
+
         public string? Error { get; set; }
 
         public int RetryCount { get; set; }

@@ -1,12 +1,11 @@
 ﻿using Banking.Bus.Events;
+using Banking.Outbox;
 using Banking.Services.Customer.Application.Abstractions;
+
 using Banking.Shared.Results;
-using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Text.Json;
 
 namespace Banking.Services.Customer.Application.Features.Customers.CreateCustomer;
 
@@ -16,11 +15,11 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
 
 
     private readonly ICustomerDbContext _context;
-    private readonly IPublishEndpoint _publishEndpoint;
-    public CreateCustomerCommandHandler(ICustomerDbContext context, IPublishEndpoint publishEndpoint)
+    
+    public CreateCustomerCommandHandler(ICustomerDbContext context)
     {
         _context = context;
-        _publishEndpoint = publishEndpoint;
+   
     }
 
     public async Task<Result<CreateCustomerResponse>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
@@ -48,16 +47,27 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
 
         await _context.Customers.AddAsync(customer, cancellationToken);
 
+        var customerCreatedEvent = new CustomerCreatedEvent(
+           customer.Id,
+           customer.FirstName,
+           customer.LastName,
+           customer.Email,
+           customer.PhoneNumber);
+
+        var outboxMessage = new OutboxMessage
+        {
+            Id = Guid.CreateVersion7(),
+            Type = typeof(CustomerCreatedEvent).AssemblyQualifiedName!,
+            Content = JsonSerializer.Serialize(customerCreatedEvent),
+            CreatedAt = DateTime.UtcNow,
+            RetryCount = 0
+        };
+
+        await _context.OutboxMessages.AddAsync(outboxMessage, cancellationToken);
         await _context.SaveChangesAsync(cancellationToken);
 
 
-        await _publishEndpoint.Publish(new CustomerCreatedEvent(
-
-            customer.Id,
-            customer.FirstName,
-            customer.LastName,
-            customer.Email,
-            customer.PhoneNumber), cancellationToken);
+       
     
 
             

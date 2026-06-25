@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Banking.Services.Customer.Infrastructure.Persistence
+namespace Banking.Services.Customer.Infrastructure.Persistence.Configuration
 {
     public sealed class CustomerConfiguration : IEntityTypeConfiguration<Domain.Entities.Customer>
     {
