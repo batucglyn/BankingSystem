@@ -20,5 +20,6 @@ namespace Banking.Outbox
         public string? Error { get; set; }
 
         public int RetryCount { get; set; }
+       
     }
 }

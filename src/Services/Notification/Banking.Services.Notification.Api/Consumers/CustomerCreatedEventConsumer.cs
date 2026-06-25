@@ -3,8 +3,9 @@ using MassTransit;
 
 namespace Banking.Services.Notification.Api.Consumers
 {
+
     public sealed class CustomerCreatedEventConsumer
-     : IConsumer<CustomerCreatedEvent>
+      : IConsumer<CustomerCreatedEvent>
     {
         private readonly ILogger<CustomerCreatedEventConsumer> _logger;
 
@@ -14,15 +15,12 @@ namespace Banking.Services.Notification.Api.Consumers
             _logger = logger;
         }
 
-        public async Task Consume(
-            ConsumeContext<CustomerCreatedEvent> context)
+        public async Task Consume(ConsumeContext<CustomerCreatedEvent> context)
         {
-            var message = context.Message;
-
             _logger.LogInformation(
-                "New customer created. CustomerId: {CustomerId}, Email: {Email}",
-                message.CustomerId,
-                message.Email);
+                "Customer created event consumed. CustomerId: {CustomerId}, Email: {Email}",
+                context.Message.CustomerId,
+                context.Message.Email);
 
             await Task.CompletedTask;
         }

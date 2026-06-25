@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Bus\Banking.Bus.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Observability\Banking.Observability.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Shared\Banking.Shared.csproj" />
     <ProjectReference Include="..\Banking.Services.Account.Application\Banking.Services.Account.Application.csproj" />
     <ProjectReference Include="..\Banking.Services.Account.Infrastructure\Banking.Services.Account.Infrastructure.csproj" />

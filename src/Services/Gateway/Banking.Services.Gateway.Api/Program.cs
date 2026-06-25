@@ -1,25 +1,22 @@
-var builder = WebApplication.CreateBuilder(args);
+using Banking.Observability.DependencyInjection;
+using Banking.Shared.Correlation;
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+var builder = WebApplication.CreateBuilder(args);
+builder.AddBankingObservability("Gateway");
+
+
+
 builder.Services.AddOpenApi();
 
 builder.Services
     .AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
-
-
-
-
-
-
-
-
 var app = builder.Build();
 
 
 app.MapReverseProxy();
+app.UseCorrelationId();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

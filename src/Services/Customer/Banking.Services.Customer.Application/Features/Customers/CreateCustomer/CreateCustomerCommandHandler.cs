@@ -1,10 +1,11 @@
 ﻿using Banking.Bus.Events;
 using Banking.Outbox;
 using Banking.Services.Customer.Application.Abstractions;
-
+using Banking.Shared.Correlation;
 using Banking.Shared.Results;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Text.Json;
 
 namespace Banking.Services.Customer.Application.Features.Customers.CreateCustomer;
@@ -12,15 +13,14 @@ namespace Banking.Services.Customer.Application.Features.Customers.CreateCustome
 public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerCommand, Result<CreateCustomerResponse>>
 {
 
-
+    private readonly ILogger<CreateCustomerCommandHandler> _logger;
 
     private readonly ICustomerDbContext _context;
-    
-    public CreateCustomerCommandHandler(ICustomerDbContext context)
+
+    public CreateCustomerCommandHandler(ICustomerDbContext context, ILogger<CreateCustomerCommandHandler> logger)
     {
         _context = context;
-   
-    }
+        _logger = logger;    }
 
     public async Task<Result<CreateCustomerResponse>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
@@ -47,6 +47,12 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
 
         await _context.Customers.AddAsync(customer, cancellationToken);
 
+        _logger.LogInformation(
+            "Customer created. CustomerId: {CustomerId}, Email: {Email}",
+            customer.Id,
+            customer.Email);
+
+
         var customerCreatedEvent = new CustomerCreatedEvent(
            customer.Id,
            customer.FirstName,
@@ -60,7 +66,7 @@ public class CreateCustomerCommandHandler : IRequestHandler<CreateCustomerComman
             Type = typeof(CustomerCreatedEvent).AssemblyQualifiedName!,
             Content = JsonSerializer.Serialize(customerCreatedEvent),
             CreatedAt = DateTime.UtcNow,
-            RetryCount = 0
+            RetryCount = 0         
         };
 
         await _context.OutboxMessages.AddAsync(outboxMessage, cancellationToken);

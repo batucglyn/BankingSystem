@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Bus\Banking.Bus.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Observability\Banking.Observability.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Shared\Banking.Shared.csproj" />
   </ItemGroup>
 

@@ -4,8 +4,10 @@ using MassTransit;
 namespace Banking.Services.Notification.Api.Consumers
 {
     public sealed class AccountCreatedEventConsumer
-      : IConsumer<AccountCreatedEvent>
+    : IConsumer<AccountCreatedEvent>
     {
+        private const string CorrelationIdHeaderName = "X-Correlation-Id";
+
         private readonly ILogger<AccountCreatedEventConsumer> _logger;
 
         public AccountCreatedEventConsumer(
@@ -14,16 +16,15 @@ namespace Banking.Services.Notification.Api.Consumers
             _logger = logger;
         }
 
-        public async Task Consume(
-            ConsumeContext<AccountCreatedEvent> context)
+        public async Task Consume(ConsumeContext<AccountCreatedEvent> context)
         {
-            var message = context.Message;
 
             _logger.LogInformation(
-                "Account created notification received. AccountId: {AccountId}, CustomerId: {CustomerId}, IBAN: {IBAN}",
-                message.AccountId,
-                message.CustomerId,
-                message.IBAN);
+                "Account created event consumed. AccountId: {AccountId}, CustomerId: {CustomerId}, IBAN: {IBAN}",
+                context.Message.AccountId,
+                context.Message.CustomerId,
+                context.Message.IBAN);
+
 
             await Task.CompletedTask;
         }

@@ -2,6 +2,7 @@
   <Folder Name="/src/" />
   <Folder Name="/src/BuildingBlocks/">
     <Project Path="src/BuildingBlocks/Banking.Bus/Banking.Bus.csproj" Id="43db624f-9794-4cc1-832c-ca199b1152de" />
+    <Project Path="src/BuildingBlocks/Banking.Observability/Banking.Observability.csproj" Id="40b489a8-763e-4ac0-82fe-c97406dc50b3" />
     <Project Path="src/BuildingBlocks/Banking.Outbox/Banking.Outbox.csproj" Id="1e916ed6-face-4eb7-a06a-1b61653f0752" />
     <Project Path="src/BuildingBlocks/Banking.Shared/Banking.Shared.csproj" Id="6da00366-1e82-4861-87f4-7fded36831b4" />
   </Folder>

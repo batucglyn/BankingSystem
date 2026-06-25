@@ -29,6 +29,7 @@ namespace Banking.Outbox
                 .IsRequired();
 
             builder.HasIndex(x => x.ProcessedAt);
+          
         }
     }
 }

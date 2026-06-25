@@ -2,7 +2,7 @@
 using Banking.Outbox;
 using Banking.Services.Account.Application.Abstractions;
 using Banking.Services.Account.Application.Common.Helpers;
-
+using Banking.Shared.Correlation;
 using Banking.Shared.Results;
 using MediatR;
 using System.Text.Json;
@@ -15,12 +15,13 @@ namespace Banking.Services.Account.Application.Features.Accounts.CreateAccount
         private readonly IAccountDbContext _context;
        
         private readonly ICustomerServiceClient _customerServiceClient;
-
+    
 
         public CreateAccountCommandHandler(IAccountDbContext context, ICustomerServiceClient customerServiceClient)
         {
             _context = context;
             _customerServiceClient = customerServiceClient;
+           
         }
 
         public async Task<Result<CreateAccountResponse>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)

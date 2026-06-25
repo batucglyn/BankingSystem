@@ -11,4 +11,9 @@
     <PackageReference Include="Yarp.ReverseProxy" Version="2.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Observability\Banking.Observability.csproj" />
+    <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Shared\Banking.Shared.csproj" />
+  </ItemGroup>
+
 </Project>
