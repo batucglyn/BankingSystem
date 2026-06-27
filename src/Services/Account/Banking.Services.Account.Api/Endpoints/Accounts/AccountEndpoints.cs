@@ -1,4 +1,5 @@
-﻿using Banking.Services.Account.Api.Endpoints.Accounts.BlockAccount;
+﻿using Banking.Authentication.Constants;
+using Banking.Services.Account.Api.Endpoints.Accounts.BlockAccount;
 using Banking.Services.Account.Api.Endpoints.Accounts.CloseAccount;
 using Banking.Services.Account.Api.Endpoints.Accounts.CreateAccount;
 using Banking.Services.Account.Api.Endpoints.Accounts.DepositMoney;
@@ -18,8 +19,8 @@ namespace Banking.Services.Account.Api.Endpoints.Accounts
          this IEndpointRouteBuilder app)
         {
             var group = app.MapGroup("/api/accounts")
-                .WithTags("Accounts");
-
+                .WithTags("Accounts")
+                  .RequireAuthorization(AuthorizationPolicies.Authenticated);
             group.MapCreateAccountEndpoint();
 
             group.MapGetAccountByIdEndpoint();

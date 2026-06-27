@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Authentication\Banking.Authentication.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Observability\Banking.Observability.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Shared\Banking.Shared.csproj" />
   </ItemGroup>

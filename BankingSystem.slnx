@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/src/" />
   <Folder Name="/src/BuildingBlocks/">
+    <Project Path="src/BuildingBlocks/Banking.Authentication/Banking.Authentication.csproj" Id="8c194757-e504-4913-91aa-2819493949c3" />
     <Project Path="src/BuildingBlocks/Banking.Bus/Banking.Bus.csproj" Id="43db624f-9794-4cc1-832c-ca199b1152de" />
     <Project Path="src/BuildingBlocks/Banking.Observability/Banking.Observability.csproj" Id="40b489a8-763e-4ac0-82fe-c97406dc50b3" />
     <Project Path="src/BuildingBlocks/Banking.Outbox/Banking.Outbox.csproj" Id="1e916ed6-face-4eb7-a06a-1b61653f0752" />
