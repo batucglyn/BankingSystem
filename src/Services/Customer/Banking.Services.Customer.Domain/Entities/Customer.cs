@@ -8,6 +8,8 @@ public sealed class Customer
 {
     public Guid Id { get; private set; }
 
+    public string KeycloakUserId { get; private set; } = default!;
+
     public string FirstName { get; private set; } = default!;
 
     public string LastName { get; private set; } = default!;
@@ -31,6 +33,7 @@ public sealed class Customer
     }
 
     public Customer(
+        string keycloakUserId,
         string firstName,
         string lastName,
         string email,
@@ -38,7 +41,7 @@ public sealed class Customer
         string identityNumber)
     {
         Id = Guid.CreateVersion7();
-
+        KeycloakUserId = keycloakUserId;
         FirstName = firstName;
 
         LastName = lastName;

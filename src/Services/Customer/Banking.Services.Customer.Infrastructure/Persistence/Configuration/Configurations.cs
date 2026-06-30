@@ -49,6 +49,12 @@ namespace Banking.Services.Customer.Infrastructure.Persistence.Configuration
 
             builder.HasIndex(x => x.IdentityNumber)
                 .IsUnique();
+            builder.Property(x => x.KeycloakUserId)
+    .HasMaxLength(100)
+    .IsRequired();
+
+            builder.HasIndex(x => x.KeycloakUserId)
+                .IsUnique();
         }
     }
 }

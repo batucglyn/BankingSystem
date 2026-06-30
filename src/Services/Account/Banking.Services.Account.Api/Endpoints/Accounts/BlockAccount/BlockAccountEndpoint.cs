@@ -1,4 +1,5 @@
-﻿using Banking.Services.Account.Application.Features.Accounts.BlockAccount;
+﻿using Banking.Authentication.Constants;
+using Banking.Services.Account.Application.Features.Accounts.BlockAccount;
 using MediatR;
 
 namespace Banking.Services.Account.Api.Endpoints.Accounts.BlockAccount
@@ -29,6 +30,7 @@ namespace Banking.Services.Account.Api.Endpoints.Accounts.BlockAccount
 
                     return Results.Ok();
                 })
+                .RequireAuthorization(AuthorizationPolicies.Admin)
                 .WithName("BlockAccount")
                 .Produces(StatusCodes.Status200OK)
                 .Produces(StatusCodes.Status400BadRequest);

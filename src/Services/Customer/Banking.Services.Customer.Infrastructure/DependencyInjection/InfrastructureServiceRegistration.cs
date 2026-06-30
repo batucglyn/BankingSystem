@@ -1,6 +1,7 @@
 ﻿using Banking.Outbox;
 using Banking.Services.Customer.Application.Abstractions;
-
+using Banking.Services.Customer.Application.Abstractions.Identity;
+using Banking.Services.Customer.Infrastructure.Identity;
 using Banking.Services.Customer.Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,6 +26,11 @@ namespace Banking.Services.Customer.Infrastructure.DependencyInjection
 
             services.AddOutboxProcessor<CustomerDbContext>();
 
+
+            services.Configure<KeycloakOptions>(
+            configuration.GetSection(KeycloakOptions.SectionName));
+
+            services.AddHttpClient<IIdentityService, KeycloakIdentityService>();
             return services;
         }
     }

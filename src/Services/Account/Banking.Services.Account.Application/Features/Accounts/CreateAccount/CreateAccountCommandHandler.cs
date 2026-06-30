@@ -1,4 +1,5 @@
-﻿using Banking.Bus.Events;
+﻿using Banking.Authentication.CurrentUser;
+using Banking.Bus.Events;
 using Banking.Outbox;
 using Banking.Services.Account.Application.Abstractions;
 using Banking.Services.Account.Application.Common.Helpers;
@@ -15,37 +16,50 @@ namespace Banking.Services.Account.Application.Features.Accounts.CreateAccount
         private readonly IAccountDbContext _context;
        
         private readonly ICustomerServiceClient _customerServiceClient;
-    
+        private readonly ICurrentUser _currentUser;
 
-        public CreateAccountCommandHandler(IAccountDbContext context, ICustomerServiceClient customerServiceClient)
+        public CreateAccountCommandHandler(IAccountDbContext context, ICustomerServiceClient customerServiceClient, ICurrentUser currentUser)
         {
             _context = context;
             _customerServiceClient = customerServiceClient;
-           
+            _currentUser = currentUser;
         }
 
         public async Task<Result<CreateAccountResponse>> Handle(CreateAccountCommand request, CancellationToken cancellationToken)
         {
 
             // checking if customer exists and is active by calling the customer service
-            var customerExists = await _customerServiceClient
-                    .CustomerExistsAndActiveAsync(
-                        request.CustomerId,
-                        cancellationToken);
+            if (!_currentUser.IsAuthenticated ||
+     string.IsNullOrWhiteSpace(_currentUser.UserId))
+            {
+                return Result<CreateAccountResponse>
+                    .Failure("User is not authenticated.");
+            }
 
-                if (!customerExists)
-                {
-                    return Result<CreateAccountResponse>
-                        .Failure("Customer not found or inactive.");
-                }
-      
+            var customer = await _customerServiceClient
+                .GetCustomerByKeycloakUserIdAsync(
+                    _currentUser.UserId,
+                    cancellationToken);
+
+            if (customer is null)
+            {
+                return Result<CreateAccountResponse>
+                    .Failure("Customer profile not found.");
+            }
+
+            if (!customer.IsActive)
+            {
+                return Result<CreateAccountResponse>
+                    .Failure("Customer is not active.");
+            }
+
 
 
             var accountNumber = AccountNumberGenerator.Generate();
             var iban = IBANGenerator.Generate(accountNumber);
 
             var account = new Domain.Entities.Account(
-                request.CustomerId,
+                customer.CustomerId,
                 accountNumber,
                 iban,
                 request.Currency

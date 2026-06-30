@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Authentication\Banking.Authentication.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Bus\Banking.Bus.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Outbox\Banking.Outbox.csproj" />
     <ProjectReference Include="..\..\..\BuildingBlocks\Banking.Shared\Banking.Shared.csproj" />

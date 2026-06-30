@@ -1,3 +1,4 @@
+using Banking.Authentication.DependencyInjection;
 using Banking.Bus.Extensions;
 using Banking.Observability.DependencyInjection;
 using Banking.Services.Customer.Api.Endpoints.Customers;
@@ -11,7 +12,7 @@ builder.AddBankingObservability("Customer.Api");
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructureServices(builder.Configuration);
-
+builder.Services.AddBankingAuthentication(builder.Configuration);
 builder.Services.AddApplicationServices();
 
 builder.Services.AddCommonMassTransit(builder.Configuration);
@@ -21,6 +22,8 @@ var app = builder.Build();
 app.UseMiddleware<GlobalExceptionMiddleware>();
 app.MapCustomerEndpoints();
 app.UseCorrelationId();
+app.UseAuthentication();
+app.UseAuthorization();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

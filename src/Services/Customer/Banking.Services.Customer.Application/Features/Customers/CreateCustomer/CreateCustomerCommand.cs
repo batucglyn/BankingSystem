@@ -11,7 +11,8 @@ namespace Banking.Services.Customer.Application.Features.Customers.CreateCustome
        string LastName,
        string Email,
        string PhoneNumber,
-       string IdentityNumber)
+       string IdentityNumber,
+          string Password)
        : IRequest<Result<CreateCustomerResponse>>;
 
 }

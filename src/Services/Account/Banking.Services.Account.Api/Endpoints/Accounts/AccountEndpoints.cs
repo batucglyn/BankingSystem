@@ -1,10 +1,12 @@
 ﻿using Banking.Authentication.Constants;
+using Banking.Authentication.CurrentUser;
 using Banking.Services.Account.Api.Endpoints.Accounts.BlockAccount;
 using Banking.Services.Account.Api.Endpoints.Accounts.CloseAccount;
 using Banking.Services.Account.Api.Endpoints.Accounts.CreateAccount;
 using Banking.Services.Account.Api.Endpoints.Accounts.DepositMoney;
 using Banking.Services.Account.Api.Endpoints.Accounts.GetAccountById;
 using Banking.Services.Account.Api.Endpoints.Accounts.GetAccountTransactions;
+using Banking.Services.Account.Api.Endpoints.Accounts.GetMyAccounts;
 using Banking.Services.Account.Api.Endpoints.Accounts.TransferMoney;
 using Banking.Services.Account.Api.Endpoints.Accounts.WithdrawMoney;
 using Banking.Services.Account.Application.Features.Accounts.CreateAccount;
@@ -22,7 +24,7 @@ namespace Banking.Services.Account.Api.Endpoints.Accounts
                 .WithTags("Accounts")
                   .RequireAuthorization(AuthorizationPolicies.Authenticated);
             group.MapCreateAccountEndpoint();
-
+            group.MapGetMyAccountsEndpoint();
             group.MapGetAccountByIdEndpoint();
 
             group.MapTransferMoneyEndpoint();
@@ -32,6 +34,13 @@ namespace Banking.Services.Account.Api.Endpoints.Accounts
             group.MapWithdrawMoneyEndpoint();
             group.MapBlockAccountEndpoint();
             group.MapCloseAccountEndpoint();
+           
+
+
+
+
+
+
             return group;
         }
     }

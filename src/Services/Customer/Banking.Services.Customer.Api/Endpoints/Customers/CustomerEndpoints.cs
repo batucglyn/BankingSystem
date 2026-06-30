@@ -1,9 +1,12 @@
-﻿using Banking.Services.Customer.Api.Endpoints.Customers.ActivateCustomer;
+﻿using Banking.Authentication.Constants;
+using Banking.Services.Customer.Api.Endpoints.Customers.ActivateCustomer;
 using Banking.Services.Customer.Api.Endpoints.Customers.CheckCustomerExists;
 using Banking.Services.Customer.Api.Endpoints.Customers.CreateCustomer;
 using Banking.Services.Customer.Api.Endpoints.Customers.DeactivateCustomer;
 using Banking.Services.Customer.Api.Endpoints.Customers.GetCustomer;
+using Banking.Services.Customer.Api.Endpoints.Customers.GetCustomerByKeycloakId;
 using Banking.Services.Customer.Api.Endpoints.Customers.GetCustomers;
+using Banking.Services.Customer.Api.Endpoints.Customers.GetMyCustomer;
 using Banking.Services.Customer.Api.Endpoints.Customers.UpdateCustomer;
 
 namespace Banking.Services.Customer.Api.Endpoints.Customers
@@ -14,7 +17,8 @@ namespace Banking.Services.Customer.Api.Endpoints.Customers
          this IEndpointRouteBuilder app)
         {
             var group = app.MapGroup("/api/customers")
-                .WithTags("Customers");
+                .WithTags("Customers")
+                 .RequireAuthorization(AuthorizationPolicies.Authenticated);
 
             group.MapCreateCustomerEndpoint();
             group.MapGetCustomerByIdEndpoint();
@@ -23,6 +27,8 @@ namespace Banking.Services.Customer.Api.Endpoints.Customers
             group.MapActivateCustomerEndpoint();
             group.MapUpdateCustomerEndpoint();
             group.MapGetCustomersEndpoint();
+            group.MapGetMyCustomerEndpoint();
+            group.MapGetCustomerByKeycloakUserIdEndpoint();
             return group;
           
         }

@@ -1,4 +1,5 @@
-﻿using Banking.Services.Customer.Application.Features.Customers.GetCustomerById;
+﻿using Banking.Authentication.Constants;
+using Banking.Services.Customer.Application.Features.Customers.GetCustomerById;
 using MediatR;
 
 namespace Banking.Services.Customer.Api.Endpoints.Customers.GetCustomer
@@ -22,6 +23,7 @@ namespace Banking.Services.Customer.Api.Endpoints.Customers.GetCustomer
 
                 return Results.Ok(result);
             })
+            .RequireAuthorization(AuthorizationPolicies.Admin)
             .WithName("GetCustomerById")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status404NotFound);

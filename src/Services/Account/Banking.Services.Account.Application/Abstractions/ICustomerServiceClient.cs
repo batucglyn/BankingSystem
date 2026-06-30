@@ -9,5 +9,13 @@ namespace Banking.Services.Account.Application.Abstractions
         Task<bool> CustomerExistsAndActiveAsync(
             Guid customerId,
             CancellationToken cancellationToken = default);
+
+
+
+
+
+        Task<CustomerByKeycloakUserIdResponse?> GetCustomerByKeycloakUserIdAsync(
+    string keycloakUserId,
+    CancellationToken cancellationToken);
     }
 }

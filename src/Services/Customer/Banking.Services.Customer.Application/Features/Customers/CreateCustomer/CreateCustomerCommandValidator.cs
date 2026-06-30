@@ -30,6 +30,9 @@ namespace Banking.Services.Customer.Application.Features.Customers.CreateCustome
             RuleFor(x => x.IdentityNumber)
                 .NotEmpty()
                 .Length(11);
+            RuleFor(x => x.Password)
+                .NotEmpty()
+                .MinimumLength(6);
         }
     }
 }

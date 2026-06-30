@@ -1,4 +1,6 @@
-﻿using Banking.Services.Account.Application.Abstractions;
+﻿using Banking.Authentication.CurrentUser;
+using Banking.Services.Account.Application.Abstractions;
+using Banking.Services.Account.Application.Features.Transfers.TransferMoney;
 using Banking.Services.Account.Domain.Entities;
 using Banking.Services.Account.Domain.Enums;
 using Banking.Shared.Results;
@@ -14,23 +16,78 @@ namespace Banking.Services.Account.Application.Features.Accounts.WithdrawMoney
      : IRequestHandler<WithdrawMoneyCommand, Result<WithdrawMoneyResponse>>
     {
         private readonly IAccountDbContext _context;
-
-        public WithdrawMoneyCommandHandler(IAccountDbContext context)
+        private readonly ICurrentUser _currentUser;
+        private readonly ICustomerServiceClient _customerServiceClient;
+        public WithdrawMoneyCommandHandler(IAccountDbContext context, ICurrentUser currentUser, ICustomerServiceClient customerServiceClient)
         {
             _context = context;
+            _currentUser = currentUser;
+            _customerServiceClient = customerServiceClient;
         }
 
         public async Task<Result<WithdrawMoneyResponse>> Handle(
             WithdrawMoneyCommand request,
             CancellationToken cancellationToken)
         {
+
+
+            if (request.Amount <= 0)
+            {
+
+                return Result<WithdrawMoneyResponse>
+                    .Failure("Withdrawal amount must be greater than zero.");
+            }
+
+
+
+
+
+            if (!_currentUser.IsAuthenticated ||
+           string.IsNullOrWhiteSpace(_currentUser.UserId))
+            {
+                return Result<WithdrawMoneyResponse>
+                    .Failure("User is not authenticated.");
+            }
+
+            var customer = await _customerServiceClient
+               .GetCustomerByKeycloakUserIdAsync(
+                   _currentUser.UserId,
+                   cancellationToken);
+
+            if (customer is null)
+            {
+                return Result<WithdrawMoneyResponse>
+                    .Failure("Customer profile not found.");
+            }
+
+            if (!customer.IsActive)
+            {
+                return Result<WithdrawMoneyResponse>
+                    .Failure("Customer is not active.");
+            }
+
+
+
+
             var account = await _context.Accounts
                 .FirstOrDefaultAsync(x => x.Id == request.AccountId, cancellationToken);
 
             if (account is null)
             {
                 return Result<WithdrawMoneyResponse>.Failure("Account not found.");
-            }          
+            }
+
+            if(account.Status != AccountStatus.Active)
+            {
+                return Result<WithdrawMoneyResponse>.Failure("Account is not active.");
+            }
+
+
+            if (account.CustomerId != customer.CustomerId)
+            {
+                return Result<WithdrawMoneyResponse>.Failure("Account does not belong to the authenticated customer.");
+            }
+
 
             try
             {

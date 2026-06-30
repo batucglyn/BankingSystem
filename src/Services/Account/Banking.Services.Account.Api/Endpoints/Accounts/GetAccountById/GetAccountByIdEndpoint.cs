@@ -1,4 +1,5 @@
-﻿using Banking.Services.Account.Application.Features.Accounts.GetAccountById;
+﻿using Banking.Authentication.Constants;
+using Banking.Services.Account.Application.Features.Accounts.GetAccountById;
 using MediatR;
 
 namespace Banking.Services.Account.Api.Endpoints.Accounts.GetAccountById
@@ -30,6 +31,7 @@ namespace Banking.Services.Account.Api.Endpoints.Accounts.GetAccountById
 
                     return Results.Ok(result.Data);
                 })
+                .RequireAuthorization(AuthorizationPolicies.Admin)
                 .WithName("GetAccountById")
                 .Produces<GetAccountByIdResponse>(
                     StatusCodes.Status200OK)

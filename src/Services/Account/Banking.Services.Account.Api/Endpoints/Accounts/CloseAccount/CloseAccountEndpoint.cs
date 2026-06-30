@@ -1,4 +1,5 @@
-﻿using Banking.Services.Account.Application.Features.Accounts.CloseAccount;
+﻿using Banking.Authentication.Constants;
+using Banking.Services.Account.Application.Features.Accounts.CloseAccount;
 using MediatR;
 
 namespace Banking.Services.Account.Api.Endpoints.Accounts.CloseAccount
@@ -30,6 +31,7 @@ namespace Banking.Services.Account.Api.Endpoints.Accounts.CloseAccount
 
                     return Results.Ok();
                 })
+                 .RequireAuthorization(AuthorizationPolicies.Admin)
                 .WithName("CloseAccount");
 
             return group;

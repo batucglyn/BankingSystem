@@ -9,7 +9,7 @@ namespace Banking.Services.Account.Application.Features.Accounts.CreateAccount
     {
         public CreateAccountCommandValidator()
         {
-            RuleFor(x => x.CustomerId).NotEmpty().WithMessage("CustomerId is required.");
+          
             RuleFor(x => x.Currency).IsInEnum().WithMessage("Invalid currency type.");
         }
     }

@@ -83,6 +83,11 @@ namespace Banking.Services.Customer.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("boolean");
 
+                    b.Property<string>("KeycloakUserId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -106,6 +111,9 @@ namespace Banking.Services.Customer.Infrastructure.Migrations
                         .IsUnique();
 
                     b.HasIndex("IdentityNumber")
+                        .IsUnique();
+
+                    b.HasIndex("KeycloakUserId")
                         .IsUnique();
 
                     b.HasIndex("PhoneNumber")

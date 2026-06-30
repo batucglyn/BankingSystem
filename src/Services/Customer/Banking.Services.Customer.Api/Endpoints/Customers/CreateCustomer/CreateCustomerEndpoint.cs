@@ -1,4 +1,5 @@
-﻿using Banking.Services.Customer.Application.Features.Customers.CreateCustomer;
+﻿using Banking.Authentication.Constants;
+using Banking.Services.Customer.Application.Features.Customers.CreateCustomer;
 using MediatR;
 
 namespace Banking.Services.Customer.Api.Endpoints.Customers.CreateCustomer
@@ -20,6 +21,7 @@ namespace Banking.Services.Customer.Api.Endpoints.Customers.CreateCustomer
 
                 return Results.Ok(result);
             })
+                .RequireAuthorization(AuthorizationPolicies.Admin)
             .WithName("CreateCustomer")
             .Produces(StatusCodes.Status200OK)
             .Produces(StatusCodes.Status400BadRequest);

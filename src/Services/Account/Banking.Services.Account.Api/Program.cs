@@ -17,6 +17,7 @@ using MediatR;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddBankingObservability("Account.Api");
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 builder.Services.AddCommonMassTransit(builder.Configuration);
